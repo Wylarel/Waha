@@ -6,6 +6,8 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.picker import MDDatePicker
 
 
@@ -14,11 +16,43 @@ class ContentNavigationDrawer(BoxLayout):
     nav_drawer = ObjectProperty()
 
 
-class Screen(BoxLayout):
+class NameDialog(BoxLayout):
+    pass
+
+
+class ClassDialog(BoxLayout):
+    pass
+
+
+class Waha(BoxLayout):
+    def update_info(self):
+        name_item = self.ids["name"]
+        birthday_item = self.ids["birthday"]
+        class_item = self.ids["class"]
+        try:
+            infos = JsonStore('data/info.json').get("info")
+        except KeyError: return
+        try:
+            name_item.secondary_text = infos["first_name"]
+        except KeyError:
+            pass
+        try:
+            name_item.tertiary_text = infos["family_name"]
+        except KeyError:
+            pass
+        try:
+            birthday_item.secondary_text = datetime.strptime(infos["birthday"], '%Y:%m:%d').strftime('%d/%m/%Y')
+        except KeyError:
+            pass
+        try:
+            class_item.secondary_text = infos["class"]
+        except KeyError:
+            pass
+
     def set_birthday(self, date):
         JsonStore('data/info.json').put("info", birthday=date.strftime('%Y:%m:%d'))
-        self.ids["birthday"].text = date.strftime('%d/%m/%Y')
-        print(date)
+        birthday_item = self.ids["birthday"]
+        birthday_item.secondary_text = date.strftime('%d/%m/%Y')
         return date
 
     def show_birthday_date_picker(self):
@@ -36,6 +70,38 @@ class Screen(BoxLayout):
             max_date=datetime.strptime("2010:01:01", '%Y:%m:%d').date()
         )
         date_dialog.open()
+
+    def open_name_popup(self):
+        dialog = MDDialog(
+            title="Changer de nom:",
+            type="custom",
+            content_cls=NameDialog(),
+            buttons=[
+                MDFlatButton(
+                    text="ANNULER"
+                ),
+                MDFlatButton(
+                    text="OK"
+                ),
+            ],
+        )
+        dialog.open()
+
+    def open_class_popup(self):
+        dialog = MDDialog(
+            title="Changer de classe:",
+            type="custom",
+            content_cls=ClassDialog(),
+            buttons=[
+                MDFlatButton(
+                    text="ANNULER"
+                ),
+                MDFlatButton(
+                    text="OK"
+                ),
+            ],
+        )
+        dialog.open()
 
 
 class MainApp(MDApp):
