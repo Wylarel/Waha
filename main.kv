@@ -57,6 +57,7 @@ Screen:
 
     NavigationLayout:
         x: toolbar.height
+        size_hint_y: 1.0 - toolbar.height/root.height
 
         ScreenManager:
             id: screen_manager
@@ -78,61 +79,64 @@ Screen:
                     halign: "center"
             Screen:
                 name: "info"
-                MDList:
-                    ThreeLineIconListItem:
-                        text: "Nom"
-                        secondary_text: "%family_name%"
-                        tertiary_text: "%first_name%"
-                        IconLeftWidget:
-                            icon: "face"
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    MDList:
+                        ThreeLineIconListItem:
+                            text: "Nom"
+                            secondary_text: "%family_name%"
+                            tertiary_text: "%first_name%"
+                            IconLeftWidget:
+                                icon: "face"
 
-                    TwoLineIconListItem:
-                        text: "Date de naissance"
-                        secondary_text: "%birthday%"
-                        IconLeftWidget:
-                            icon: "cake"
+                        TwoLineIconListItem:
+                            text: "Date de naissance"
+                            secondary_text: "%birthday%"
+                            IconLeftWidget:
+                                icon: "cake"
 
-                    TwoLineIconListItem:
-                        text: "Classe"
-                        secondary_text: "%class%"
-                        IconLeftWidget:
-                            icon: "account-group"
-                    MDSeparator:
-                    TwoLineIconListItem:
-                        text: "Adresse"
-                        secondary_text: "Boulevard d'Avroy, 96 4000 Liège"
-                        IconLeftWidget:
-                            icon: "map-marker"
-                    TwoLineIconListItem:
-                        text: "Email"
-                        secondary_text: "waha.administration@gmail.com"
-                        IconLeftWidget:
-                            icon: "email"
-                    TwoLineIconListItem:
-                        text: "Accueil"
-                        secondary_text: "04/238-39-21"
-                        IconLeftWidget:
-                            icon: "phone"
-                    TwoLineIconListItem:
-                        text: "Economat"
-                        secondary_text: "04/238-39-24"
-                        IconLeftWidget:
-                            icon: "phone"
-                    TwoLineIconListItem:
-                        text: "Secrétariat de Direction"
-                        secondary_text: "04/238-39-25"
-                        IconLeftWidget:
-                            icon: "phone"
-                    TwoLineIconListItem:
-                        text: "Educateurs (1-2-3e années)"
-                        secondary_text: "04/238-39-26"
-                        IconLeftWidget:
-                            icon: "phone"
-                    TwoLineIconListItem:
-                        text: "Educateurs (4-5-6e années)"
-                        secondary_text: "04/238-39-27"
-                        IconLeftWidget:
-                            icon: "phone"
+                        TwoLineIconListItem:
+                            text: "Classe"
+                            secondary_text: "%class%"
+                            IconLeftWidget:
+                                icon: "account-group"
+                        MDSeparator:
+                        TwoLineIconListItem:
+                            text: "Adresse"
+                            secondary_text: "Boulevard d'Avroy, 96 4000 Liège"
+                            IconLeftWidget:
+                                icon: "map-marker"
+                        TwoLineIconListItem:
+                            text: "Email"
+                            secondary_text: "waha.administration@gmail.com"
+                            IconLeftWidget:
+                                icon: "email"
+                        TwoLineIconListItem:
+                            text: "Accueil"
+                            secondary_text: "04/238-39-21"
+                            IconLeftWidget:
+                                icon: "phone"
+                        TwoLineIconListItem:
+                            text: "Economat"
+                            secondary_text: "04/238-39-24"
+                            IconLeftWidget:
+                                icon: "phone"
+                        TwoLineIconListItem:
+                            text: "Secrétariat de Direction"
+                            secondary_text: "04/238-39-25"
+                            IconLeftWidget:
+                                icon: "phone"
+                        TwoLineIconListItem:
+                            text: "Educateurs (1-2-3e années)"
+                            secondary_text: "04/238-39-26"
+                            IconLeftWidget:
+                                icon: "phone"
+                        TwoLineIconListItem:
+                            text: "Educateurs (4-5-6e années)"
+                            secondary_text: "04/238-39-27"
+                            IconLeftWidget:
+                                icon: "phone"
 
         MDNavigationDrawer:
             id: nav_drawer
