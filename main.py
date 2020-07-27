@@ -17,19 +17,6 @@ class ContentNavigationDrawer(BoxLayout):
     nav_drawer = ObjectProperty()
 
 
-class ItemDrawer(OneLineIconListItem):
-    icon = StringProperty()
-
-
-class DrawerList(ThemableBehavior, MDList):
-    def set_color_item(self, instance_item):
-        for item in self.children:
-            if item.text_color == self.theme_cls.primary_color:
-                item.text_color = self.theme_cls.text_color
-                break
-        instance_item.text_color = self.theme_cls.primary_color
-
-
 class MainApp(MDApp):
     def __init__(self, **kwargs):
         self.icon = "ressources/img/logo_pure.png"
