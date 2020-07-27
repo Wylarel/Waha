@@ -1,0 +1,141 @@
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "center"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            source: "ressources/img/logo.png"
+    ScrollView:
+        MDList:
+            OneLineIconListItem:
+                text: "Accueil"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "home"
+                IconLeftWidget:
+                    icon: "home"
+
+            OneLineIconListItem:
+                text: "Horaire"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "schedule"
+                IconLeftWidget:
+                    icon: "calendar"
+
+            OneLineIconListItem:
+                text: "Notes"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "notes"
+                IconLeftWidget:
+                    icon: "file"
+
+            OneLineIconListItem:
+                text: "Info"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "info"
+                IconLeftWidget:
+                    icon: "account-box"
+
+
+Screen:
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10
+        title: "Waha"
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+    NavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+            Screen:
+                name: "home"
+                MDLabel:
+                    id: "home-time-widget"
+                    text: "00:00"
+                    halign: "center"
+            Screen:
+                name: "schedule"
+                MDLabel:
+                    text: "Horaire"
+                    halign: "center"
+            Screen:
+                name: "notes"
+                MDLabel:
+                    text: "Notes"
+                    halign: "center"
+            Screen:
+                name: "info"
+                MDList:
+                    ThreeLineIconListItem:
+                        text: "Nom"
+                        secondary_text: "%family_name%"
+                        tertiary_text: "%first_name%"
+                        IconLeftWidget:
+                            icon: "face"
+
+                    TwoLineIconListItem:
+                        text: "Date de naissance"
+                        secondary_text: "%birthday%"
+                        IconLeftWidget:
+                            icon: "cake"
+
+                    TwoLineIconListItem:
+                        text: "Classe"
+                        secondary_text: "%class%"
+                        IconLeftWidget:
+                            icon: "account-group"
+                    MDSeparator:
+                    TwoLineIconListItem:
+                        text: "Adresse"
+                        secondary_text: "Boulevard d'Avroy, 96 4000 Liège"
+                        IconLeftWidget:
+                            icon: "map-marker"
+                    TwoLineIconListItem:
+                        text: "Email"
+                        secondary_text: "waha.administration@gmail.com"
+                        IconLeftWidget:
+                            icon: "email"
+                    TwoLineIconListItem:
+                        text: "Accueil"
+                        secondary_text: "04/238-39-21"
+                        IconLeftWidget:
+                            icon: "phone"
+                    TwoLineIconListItem:
+                        text: "Economat"
+                        secondary_text: "04/238-39-24"
+                        IconLeftWidget:
+                            icon: "phone"
+                    TwoLineIconListItem:
+                        text: "Secrétariat de Direction"
+                        secondary_text: "04/238-39-25"
+                        IconLeftWidget:
+                            icon: "phone"
+                    TwoLineIconListItem:
+                        text: "Educateurs (1-2-3e années)"
+                        secondary_text: "04/238-39-26"
+                        IconLeftWidget:
+                            icon: "phone"
+                    TwoLineIconListItem:
+                        text: "Educateurs (4-5-6e années)"
+                        secondary_text: "04/238-39-27"
+                        IconLeftWidget:
+                            icon: "phone"
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
