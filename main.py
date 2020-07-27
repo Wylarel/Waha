@@ -1,15 +1,12 @@
 from datetime import datetime
 
-from kivy.lang import Builder
-from kivy.config import Config
-
-from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.boxlayout import BoxLayout
-from kivymd.app import MDApp
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.list import OneLineIconListItem, MDList
-from kivymd.uix.picker import MDDatePicker
+from kivy.core.window import Window
+from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
+from kivy.uix.boxlayout import BoxLayout
+
+from kivymd.app import MDApp
+from kivymd.uix.picker import MDDatePicker
 
 
 class ContentNavigationDrawer(BoxLayout):
@@ -17,16 +14,10 @@ class ContentNavigationDrawer(BoxLayout):
     nav_drawer = ObjectProperty()
 
 
-class MainApp(MDApp):
-    def __init__(self, **kwargs):
-        self.icon = "ressources/img/logo_pure.png"
-        self.title = "Waha"
-        self.theme_cls.theme_style = "Light"
-        self.theme_cls.primary_palette = "Pink"
-        super().__init__(**kwargs)
-
+class Screen(BoxLayout):
     def set_birthday(self, date):
         JsonStore('data/info.json').put("info", birthday=date.strftime('%Y:%m:%d'))
+        self.ids["birthday"].text = date.strftime('%d/%m/%Y')
         print(date)
         return date
 
@@ -47,4 +38,15 @@ class MainApp(MDApp):
         date_dialog.open()
 
 
-MainApp().run()
+class MainApp(MDApp):
+    def build(self):
+        self.icon = "ressources/img/logo_pure.png"
+        self.title = "Waha"
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.primary_palette = "Pink"
+        Window.size = (360, 640)
+
+
+if __name__ == '__main__':
+    app = MainApp()
+    app.run()
