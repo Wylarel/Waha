@@ -43,7 +43,7 @@ class MainApp(MDApp):
         print(date)
         return date
 
-    def show_date_picker(self):
+    def show_birthday_date_picker(self):
         try:
             init_date = datetime.strptime(JsonStore('data/info.json').get("info")["birthday"], '%Y:%m:%d')
         except KeyError:
