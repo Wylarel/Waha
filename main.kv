@@ -83,28 +83,37 @@ Screen:
                     do_scroll_x: False
                     do_scroll_y: True
                     MDList:
+                        OneLineListItem:
+                            text: "Informations Personnelles"
                         ThreeLineIconListItem:
+                            id: "name"
                             text: "Nom"
-                            secondary_text: "%family_name%"
-                            tertiary_text: "%first_name%"
+                            secondary_text: "Cliquez pour"
+                            tertiary_text: "définir"
                             IconLeftWidget:
                                 icon: "face"
 
                         TwoLineIconListItem:
+                            id: "birthday"
                             text: "Date de naissance"
-                            secondary_text: "%birthday%"
+                            secondary_text: "Cliquez pour définir"
+                            on_press:
+                                app.show_date_picker()
                             IconLeftWidget:
                                 icon: "cake"
 
                         TwoLineIconListItem:
+                            id: "class"
                             text: "Classe"
-                            secondary_text: "%class%"
+                            secondary_text: "Cliquez pour définir"
                             IconLeftWidget:
                                 icon: "account-group"
-                        MDSeparator:
-                        TwoLineIconListItem:
+                        OneLineListItem:
+                            text: "Informations Générales"
+                        ThreeLineIconListItem:
                             text: "Adresse"
-                            secondary_text: "Boulevard d'Avroy, 96 4000 Liège"
+                            secondary_text: "Boulevard d'Avroy, 96"
+                            tertiary_text: "4000 Liège"
                             IconLeftWidget:
                                 icon: "map-marker"
                         TwoLineIconListItem:
