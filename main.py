@@ -25,39 +25,29 @@ class ClassDialog(BoxLayout):
 
 
 class Waha(BoxLayout):
+    dialog = None
+
     def update_info(self):
-        name_item = self.ids["name"]
-        birthday_item = self.ids["birthday"]
-        class_item = self.ids["class"]
-        try:
-            infos = JsonStore('data/info.json').get("info")
-        except KeyError: return
-        try:
-            name_item.secondary_text = infos["first_name"]
-        except KeyError:
-            pass
-        try:
-            name_item.tertiary_text = infos["family_name"]
-        except KeyError:
-            pass
-        try:
-            birthday_item.secondary_text = datetime.strptime(infos["birthday"], '%Y:%m:%d').strftime('%d/%m/%Y')
-        except KeyError:
-            pass
-        try:
-            class_item.secondary_text = infos["class"]
-        except KeyError:
-            pass
+        store = JsonStore('data/info.json')
+
+        if store.exists('name'):
+            self.ids["name"].secondary_text = store.get("name")["first_name"]
+            self.ids["name"].tertiary_text = store.get("name")["family_name"]
+
+        if store.exists('birthday'):
+            self.ids["birthday"].secondary_text = datetime.strptime(store.get("birthday")["date"], '%Y:%m:%d').strftime('%d/%m/%Y')
+
+        if store.exists('class'):
+            self.ids["class"].secondary_text = store.get("class")["value"]
 
     def set_birthday(self, date):
-        JsonStore('data/info.json').put("info", birthday=date.strftime('%Y:%m:%d'))
-        birthday_item = self.ids["birthday"]
-        birthday_item.secondary_text = date.strftime('%d/%m/%Y')
+        JsonStore('data/info.json').put("birthday", date=date.strftime('%Y:%m:%d'))
+        self.update_info()
         return date
 
     def show_birthday_date_picker(self):
         try:
-            init_date = datetime.strptime(JsonStore('data/info.json').get("info")["birthday"], '%Y:%m:%d')
+            init_date = datetime.strptime(JsonStore('data/info.json').get("birthday")["date"], '%Y:%m:%d')
         except KeyError:
             init_date = datetime.strptime("2000:01:01", '%Y:%m:%d').date()
 
@@ -72,36 +62,58 @@ class Waha(BoxLayout):
         date_dialog.open()
 
     def open_name_popup(self):
-        dialog = MDDialog(
+        self.dialog = MDDialog(
             title="Changer de nom:",
             type="custom",
             content_cls=NameDialog(),
             buttons=[
                 MDFlatButton(
-                    text="ANNULER"
+                    text="ANNULER",
+                    on_release=self.dialog_close
                 ),
                 MDFlatButton(
-                    text="OK"
+                    text="OK",
+                    on_release=self.set_name
                 ),
             ],
+            size_hint_x=0.8
         )
-        dialog.open()
+        self.dialog.open()
+
+    def set_name(self, *args):
+        first_name = self.dialog.content_cls.ids["first_name_input"].text.capitalize()
+        family_name = self.dialog.content_cls.ids["family_name_input"].text.upper()
+        if len(first_name) > 0: JsonStore('data/info.json').put("name", first_name=first_name, family_name=family_name)
+        self.dialog_close()
+        self.update_info()
 
     def open_class_popup(self):
-        dialog = MDDialog(
+        self.dialog = MDDialog(
             title="Changer de classe:",
             type="custom",
             content_cls=ClassDialog(),
             buttons=[
                 MDFlatButton(
-                    text="ANNULER"
+                    text="ANNULER",
+                    on_release=self.dialog_close
                 ),
                 MDFlatButton(
-                    text="OK"
+                    text="OK",
+                    on_release=self.set_class
                 ),
             ],
+            size_hint_x=0.8
         )
-        dialog.open()
+        self.dialog.open()
+
+    def set_class(self, *args):
+        JsonStore('data/info.json').put("class", value=self.dialog.content_cls.ids["class_input"].text.upper()[0:4])
+        self.dialog_close()
+        self.update_info()
+
+    def dialog_close(self, *args):
+        if self.dialog:
+            self.dialog.dismiss(force=True)
 
 
 class MainApp(MDApp):

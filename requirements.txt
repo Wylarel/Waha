@@ -1,2 +1,2 @@
-kivy
-kivymd
+Kivy~=2.0.0rc3
+kivymd~=0.104.1
