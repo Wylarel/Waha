@@ -3,11 +3,9 @@
     spacing: "12dp"
     size_hint: .8, None
     height: "120dp"
-
     MDTextField:
         id: first_name_input
         hint_text: "Prénom"
-
     MDTextField:
         id: family_name_input
         hint_text: "Nom de famille"
@@ -17,22 +15,25 @@
     spacing: "12dp"
     size_hint: .8, None
     height: "50dp"
-
     MDTextField:
         id: class_input
         hint_text: "Classe"
         max_text_length: 4
 
+<NoteListItem>
+    on_release: app.root.load_note(root)
+    IconLeftWidget:
+        icon: root.icon
+        on_release: app.root.delete_note(root)
+
 <ContentNavigationDrawer>:
     orientation: "vertical"
     padding: "8dp"
     spacing: "8dp"
-
     AnchorLayout:
         anchor_x: "center"
         size_hint_y: None
         height: avatar.height
-
         Image:
             id: avatar
             size_hint: None, None
@@ -46,7 +47,6 @@
                     root.screen_manager.current = "home"
                 IconLeftWidget:
                     icon: "home"
-
             OneLineIconListItem:
                 text: "Horaire"
                 on_press:
@@ -54,15 +54,14 @@
                     root.screen_manager.current = "schedule"
                 IconLeftWidget:
                     icon: "calendar"
-
             OneLineIconListItem:
                 text: "Notes"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "notes"
+                    app.root.update_notelist()
                 IconLeftWidget:
-                    icon: "file"
-
+                    icon: "notebook"
             OneLineIconListItem:
                 text: "Info"
                 on_press:
@@ -71,7 +70,14 @@
                     app.root.update_info()
                 IconLeftWidget:
                     icon: "account-box"
-
+            OneLineIconListItem:
+                text: "Signaler un bug"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "bugreport"
+                    app.root.update_info()
+                IconLeftWidget:
+                    icon: "bug"
 
 Waha: #Root Rule
     cols: 1
@@ -81,18 +87,17 @@ Waha: #Root Rule
         elevation: 10
         title: "Waha"
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-
     NavigationLayout:
         x: toolbar.height
         size_hint_y: 1.0 - toolbar.height/root.height
-
         ScreenManager:
             id: screen_manager
             Screen:
                 name: "home"
                 MDLabel:
                     id: home-time-widget
-                    text: "00:00"
+                    padding: "40dp", 0
+                    text: "Bienvenue sur l'application non-officielle pour les élèves de l'Athénée Léonie de Waha. Commencez à naviguer dans l'application en ouvrant le menu à gauche. Si vous détectez des bugs, merci de nous en informer. (Voir onglet \"Signaler un bug\")"
                     halign: "center"
             Screen:
                 name: "schedule"
@@ -101,9 +106,38 @@ Waha: #Root Rule
                     halign: "center"
             Screen:
                 name: "notes"
-                MDLabel:
-                    text: "Notes"
-                    halign: "center"
+                id: notes_screen
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    MDList:
+                        id: notelist
+                MDFloatingActionButton:
+                    icon: "plus"
+                    id: new
+                    y: root.height - (self.height + toolbar.height + dp(10))
+                    x: root.width - (self.width + dp(10))
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press:
+                        root.load_note(self)
+            Screen:
+                name: "editnote"
+                MDTextField:
+                    id: note_textfield
+                    size_hint_x: 1
+                    size_hint_y: 1
+                    multiline: True
+                MDFloatingActionButton:
+                    icon: "arrow-left"
+                    id: editnote_back_floating_button
+                    y: root.height - (self.height + toolbar.height + dp(10))
+                    x: dp(10)
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press:
+                        screen_manager.current = "notes"
+                        root.save_note()
+                        root.update_notelist()
+
             Screen:
                 name: "info"
                 ScrollView:
@@ -121,7 +155,6 @@ Waha: #Root Rule
                                 root.open_name_popup()
                             IconLeftWidget:
                                 icon: "face"
-
                         TwoLineIconListItem:
                             id: birthday
                             text: "Date de naissance"
@@ -130,7 +163,6 @@ Waha: #Root Rule
                                 root.show_birthday_date_picker()
                             IconLeftWidget:
                                 icon: "cake"
-
                         TwoLineIconListItem:
                             id: class
                             text: "Classe"
@@ -177,7 +209,27 @@ Waha: #Root Rule
                             secondary_text: "04/238-39-27"
                             IconLeftWidget:
                                 icon: "phone"
-
+            Screen:
+                name: "bugreport"
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    MDList:
+                        TwoLineIconListItem:
+                            text: "Messenger"
+                            secondary_text: "@wylarel"
+                            IconLeftWidget:
+                                icon: "facebook-messenger"
+                        TwoLineIconListItem:
+                            text: "Instagram"
+                            secondary_text: "@wylarel"
+                            IconLeftWidget:
+                                icon: "instagram"
+                        TwoLineIconListItem:
+                            text: "Email"
+                            secondary_text: "contact@wylarel.com"
+                            IconLeftWidget:
+                                icon: "email"
         MDNavigationDrawer:
             id: nav_drawer
             ContentNavigationDrawer:
