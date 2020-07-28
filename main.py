@@ -123,7 +123,6 @@ class MainApp(MDApp):
         self.title = "Waha"
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Pink"
-        Window.size = (360, 640)
 
 
 if __name__ == '__main__':
