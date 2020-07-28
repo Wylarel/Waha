@@ -38,6 +38,9 @@ class Waha(MDGridLayout):
     notelist_items = {}
 
     def update_info(self):
+        """
+            Met à jour les informations dans l'onglet "Infos"
+        """
         store = JsonStore('info.json')
 
         if store.exists('name'):
@@ -51,11 +54,17 @@ class Waha(MDGridLayout):
             self.ids["class"].secondary_text = store.get("class")["value"]
 
     def set_birthday(self, date):
+        """
+            Définis la date d'anniversaire
+        """
         JsonStore('info.json').put("birthday", date=date.strftime('%Y:%m:%d'))
         self.update_info()
         return date
 
     def show_birthday_date_picker(self):
+        """
+            Ouvre la popup pour choisir la date d'anniversaire
+        """
         try:
             init_date = datetime.strptime(JsonStore('info.json').get("birthday")["date"], '%Y:%m:%d')
         except KeyError:
@@ -72,6 +81,9 @@ class Waha(MDGridLayout):
         date_dialog.open()
 
     def open_name_popup(self):
+        """
+            Ouvre une popup pour choisir un nom
+        """
         self.dialog = MDDialog(
             title="Changer de nom:",
             type="custom",
@@ -91,6 +103,9 @@ class Waha(MDGridLayout):
         self.dialog.open()
 
     def set_name(self, *args):
+        """
+            Définis un nouveau nom
+        """
         first_name = self.dialog.content_cls.ids["first_name_input"].text.capitalize()
         family_name = self.dialog.content_cls.ids["family_name_input"].text.upper()
         if len(first_name) > 0: JsonStore('info.json').put("name", first_name=first_name, family_name=family_name)
@@ -98,6 +113,9 @@ class Waha(MDGridLayout):
         self.update_info()
 
     def open_class_popup(self):
+        """
+            Ouvre une popup pour changer de classe
+        """
         self.dialog = MDDialog(
             title="Changer de classe:",
             type="custom",
@@ -117,15 +135,24 @@ class Waha(MDGridLayout):
         self.dialog.open()
 
     def set_class(self, *args):
+        """
+            Définis une nouvelle classe
+        """
         JsonStore('info.json').put("class", value=self.dialog.content_cls.ids["class_input"].text.upper()[0:4])
         self.dialog_close()
         self.update_info()
 
     def dialog_close(self, *args):
+        """
+            Ferme n'importe quel dialogue ouvert
+        """
         if self.dialog:
             self.dialog.dismiss(force=True)
 
     def load_note(self, *args):
+        """
+            Ouvre une note pour l'éditer
+        """
         if args[0] in self.notelist_items.keys():
             note_to_load = self.notelist_items.get(args[0])
         else:
@@ -140,12 +167,18 @@ class Waha(MDGridLayout):
         self.current_note = note_to_load
 
     def save_note(self):
+        """
+            Sauvegarde une note
+        """
         text = self.ids["note_textfield"].text
         if text.replace(" ", "") == "": return
         store = JsonStore('notes.json')
         store.put(self.current_note, text=text)
 
     def update_notelist(self):
+        """
+            Met à jour la liste des notes dans l'onglet notes
+        """
         store = JsonStore('notes.json')
         notelist = self.ids["notelist"]
         for widget in self.notelist_items:
@@ -157,12 +190,18 @@ class Waha(MDGridLayout):
             notelist.add_widget(widget)
             self.notelist_items[widget] = note
 
-    def delete_note(self, *args):
+    def delete_note(self):
+        """
+            Supprime la note self.current_note, qui est définie par la prochaine fonction
+        """
         JsonStore('notes.json').delete(self.notelist_items.get(self.current_note))
         self.dialog_close()
         self.update_notelist()
 
     def open_note_delete_confirmation_popup(self, *args):
+        """
+            Ouvre une popup de confirmation pour confirmer la suppression d'une note
+        """
         self.current_note = args[0]
         self.dialog = MDDialog(
             title="Voullez vous vraiment supprimer cette note ?",
@@ -183,6 +222,9 @@ class Waha(MDGridLayout):
         self.dialog.open()
 
     def open_link(self, link: str):
+        """
+            Ouvre un lien hyper-texte dans le navigateur ou application préféré.e
+        """
         webbrowser.open(link)
 
 
