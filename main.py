@@ -3,12 +3,12 @@ from datetime import datetime
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.picker import MDDatePicker
 
 
@@ -25,7 +25,7 @@ class ClassDialog(BoxLayout):
     pass
 
 
-class Waha(GridLayout):
+class Waha(MDGridLayout):
     dialog = None
 
     def update_info(self):
