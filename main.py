@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.boxlayout import BoxLayout
@@ -29,7 +28,7 @@ class Waha(MDGridLayout):
     dialog = None
 
     def update_info(self):
-        store = JsonStore('storage/info.json')
+        store = JsonStore('info.json')
 
         if store.exists('name'):
             self.ids["name"].secondary_text = store.get("name")["first_name"]
@@ -42,13 +41,13 @@ class Waha(MDGridLayout):
             self.ids["class"].secondary_text = store.get("class")["value"]
 
     def set_birthday(self, date):
-        JsonStore('storage/info.json').put("birthday", date=date.strftime('%Y:%m:%d'))
+        JsonStore('info.json').put("birthday", date=date.strftime('%Y:%m:%d'))
         self.update_info()
         return date
 
     def show_birthday_date_picker(self):
         try:
-            init_date = datetime.strptime(JsonStore('storage/info.json').get("birthday")["date"], '%Y:%m:%d')
+            init_date = datetime.strptime(JsonStore('info.json').get("birthday")["date"], '%Y:%m:%d')
         except KeyError:
             init_date = datetime.strptime("2000:01:01", '%Y:%m:%d').date()
 
@@ -84,7 +83,7 @@ class Waha(MDGridLayout):
     def set_name(self, *args):
         first_name = self.dialog.content_cls.ids["first_name_input"].text.capitalize()
         family_name = self.dialog.content_cls.ids["family_name_input"].text.upper()
-        if len(first_name) > 0: JsonStore('storage/info.json').put("name", first_name=first_name, family_name=family_name)
+        if len(first_name) > 0: JsonStore('info.json').put("name", first_name=first_name, family_name=family_name)
         self.dialog_close()
         self.update_info()
 
@@ -108,7 +107,7 @@ class Waha(MDGridLayout):
         self.dialog.open()
 
     def set_class(self, *args):
-        JsonStore('storage/info.json').put("class", value=self.dialog.content_cls.ids["class_input"].text.upper()[0:4])
+        JsonStore('info.json').put("class", value=self.dialog.content_cls.ids["class_input"].text.upper()[0:4])
         self.dialog_close()
         self.update_info()
 
