@@ -227,10 +227,10 @@ android.arch = armeabi-v7a
 #
 
 # (str) python-for-android fork to use, defaults to upstream (kivy)
-#p4a.fork = kivy
+p4a.fork = wylarel
 
 # (str) python-for-android branch to use, defaults to master
-#p4a.branch = master
+p4a.branch = develop
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
 #p4a.source_dir =
@@ -289,7 +289,6 @@ build_dir = ./.buildozer
 
 # (str) Path to build output (i.e. .apk, .ipa) storage
 bin_dir = ./bin
-
 #    -----------------------------------------------------------------------------
 #    List as sections
 #
