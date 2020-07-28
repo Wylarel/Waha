@@ -1,6 +1,7 @@
 import random
 import string
 from datetime import datetime
+import webbrowser
 
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
@@ -11,6 +12,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
 from kivymd.uix.picker import MDDatePicker
+
 
 
 class ContentNavigationDrawer(BoxLayout):
@@ -179,6 +181,9 @@ class Waha(MDGridLayout):
             size_hint_x=0.8
         )
         self.dialog.open()
+
+    def open_link(self, link: str):
+        webbrowser.open(link)
 
 
 class MainApp(MDApp):

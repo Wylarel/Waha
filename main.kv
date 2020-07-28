@@ -47,6 +47,9 @@
                     root.screen_manager.current = "home"
                 IconLeftWidget:
                     icon: "home"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "home"
             OneLineIconListItem:
                 text: "Horaire"
                 on_press:
@@ -54,6 +57,9 @@
                     root.screen_manager.current = "schedule"
                 IconLeftWidget:
                     icon: "calendar"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "schedule"
             OneLineIconListItem:
                 text: "Notes"
                 on_press:
@@ -62,6 +68,10 @@
                     app.root.update_notelist()
                 IconLeftWidget:
                     icon: "notebook"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "notes"
+                        app.root.update_notelist()
             OneLineIconListItem:
                 text: "Info"
                 on_press:
@@ -70,6 +80,10 @@
                     app.root.update_info()
                 IconLeftWidget:
                     icon: "account-box"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "info"
+                        app.root.update_info()
             OneLineIconListItem:
                 text: "Signaler un bug"
                 on_press:
@@ -78,6 +92,10 @@
                     app.root.update_info()
                 IconLeftWidget:
                     icon: "bug"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "bugreport"
+                        app.root.update_info()
 
 Waha: #Root Rule
     cols: 1
@@ -102,7 +120,8 @@ Waha: #Root Rule
             Screen:
                 name: "schedule"
                 MDLabel:
-                    text: "Horaire"
+                    padding: "40dp", 0
+                    text: "Cette fonctionalité est encore en cours de construction, revenez plus tard ! <3"
                     halign: "center"
             Screen:
                 name: "notes"
@@ -175,40 +194,54 @@ Waha: #Root Rule
                             text: "Informations Générales"
                         ThreeLineIconListItem:
                             text: "Adresse"
+                            on_release: root.open_link("https://www.google.com/maps/dir//Ath%C3%A9n%C3%A9e+L%C3%A9onie+de+Waha,+Boulevard+d'Avroy+96,+4000+Li%C3%A8ge/")
                             secondary_text: "Boulevard d'Avroy, 96"
                             tertiary_text: "4000 Liège"
                             IconLeftWidget:
                                 icon: "map-marker"
+                                on_release: root.open_link("https://www.google.com/maps/dir//Ath%C3%A9n%C3%A9e+L%C3%A9onie+de+Waha,+Boulevard+d'Avroy+96,+4000+Li%C3%A8ge/")
                         TwoLineIconListItem:
                             text: "Email"
+                            on_release: root.open_link("mailto:waha.administration@gmail.com")
                             secondary_text: "waha.administration@gmail.com"
                             IconLeftWidget:
                                 icon: "email"
+                                on_release: root.open_link("mailto:waha.administration@gmail.com")
                         TwoLineIconListItem:
                             text: "Accueil"
+                            on_release: root.open_link("tel:042383921")
                             secondary_text: "04/238-39-21"
                             IconLeftWidget:
                                 icon: "phone"
+                                on_release: root.open_link("tel:042383921")
                         TwoLineIconListItem:
                             text: "Economat"
+                            on_release: root.open_link("tel:042383924")
                             secondary_text: "04/238-39-24"
                             IconLeftWidget:
                                 icon: "phone"
+                                on_release: root.open_link("tel:042383924")
                         TwoLineIconListItem:
                             text: "Secrétariat de Direction"
+                            on_release: root.open_link("tel:042383925")
                             secondary_text: "04/238-39-25"
                             IconLeftWidget:
                                 icon: "phone"
+                                on_release: root.open_link("tel:042383925")
                         TwoLineIconListItem:
                             text: "Educateurs (1-2-3e années)"
+                            on_release: root.open_link("tel:042383926")
                             secondary_text: "04/238-39-26"
                             IconLeftWidget:
                                 icon: "phone"
+                                on_release: root.open_link("tel:042383926")
                         TwoLineIconListItem:
                             text: "Educateurs (4-5-6e années)"
+                            on_release: root.open_link("tel:042383927")
                             secondary_text: "04/238-39-27"
                             IconLeftWidget:
                                 icon: "phone"
+                                on_release: root.open_link("tel:042383927")
             Screen:
                 name: "bugreport"
                 ScrollView:
@@ -217,19 +250,25 @@ Waha: #Root Rule
                     MDList:
                         TwoLineIconListItem:
                             text: "Messenger"
+                            on_release: root.open_link("https://m.me/wylarel")
                             secondary_text: "@wylarel"
                             IconLeftWidget:
                                 icon: "facebook-messenger"
+                                on_release: root.open_link("https://m.me/wylarel")
                         TwoLineIconListItem:
                             text: "Instagram"
+                            on_release: root.open_link("https://instagram.com/wylarel")
                             secondary_text: "@wylarel"
                             IconLeftWidget:
                                 icon: "instagram"
+                                on_release: root.open_link("https://instagram.com/wylarel")
                         TwoLineIconListItem:
                             text: "Email"
+                            on_release: root.open_link("mailto:contact@wylarel.com")
                             secondary_text: "contact@wylarel.com"
                             IconLeftWidget:
                                 icon: "email"
+                                on_release: root.open_link("mailto:contact@wylarel.com")
         MDNavigationDrawer:
             id: nav_drawer
             ContentNavigationDrawer:
