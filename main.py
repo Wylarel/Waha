@@ -156,8 +156,29 @@ class Waha(MDGridLayout):
             self.notelist_items[widget] = note
 
     def delete_note(self, *args):
-        JsonStore('notes.json').delete(self.notelist_items.get(args[0]))
+        JsonStore('notes.json').delete(self.notelist_items.get(self.current_note))
+        self.dialog_close()
         self.update_notelist()
+
+    def open_note_delete_confirmation_popup(self, *args):
+        self.current_note = args[0]
+        self.dialog = MDDialog(
+            title="Voullez vous vraiment supprimer cette note ?",
+            text="Vous ne pourrez pas la restaurer",
+            type="custom",
+            buttons=[
+                MDFlatButton(
+                    text="ANNULER",
+                    on_release=self.dialog_close
+                ),
+                MDFlatButton(
+                    text="CONFIRMER",
+                    on_release=self.delete_note
+                ),
+            ],
+            size_hint_x=0.8
+        )
+        self.dialog.open()
 
 
 class MainApp(MDApp):

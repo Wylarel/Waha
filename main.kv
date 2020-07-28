@@ -24,7 +24,7 @@
     on_release: app.root.load_note(root)
     IconLeftWidget:
         icon: root.icon
-        on_release: app.root.delete_note(root)
+        on_release: app.root.open_note_delete_confirmation_popup(root)
 
 <ContentNavigationDrawer>:
     orientation: "vertical"
