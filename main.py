@@ -3,6 +3,7 @@ from datetime import datetime
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
@@ -24,7 +25,7 @@ class ClassDialog(BoxLayout):
     pass
 
 
-class Waha(BoxLayout):
+class Waha(GridLayout):
     dialog = None
 
     def update_info(self):
