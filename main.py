@@ -4,9 +4,12 @@ import webbrowser
 from datetime import datetime
 
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.storage.jsonstore import JsonStore
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFlatButton
@@ -29,8 +32,24 @@ class ClassDialog(BoxLayout):
     pass
 
 
+class ScheduleCellDialog(BoxLayout):
+    pass
+
+
 class NoteListItem(OneLineIconListItem):
     icon = "trash-can"
+
+
+class ScheduleCell(Button):
+    cellpos = [0, 0]
+    material = StringProperty()
+    location = StringProperty()
+    background_color = StringProperty()
+    # background_normal = "ressources/img/logo.png"
+
+    def on_release(self):
+        app.root.ids["schedulescreen"].editing_cell = self
+        app.root.ids["schedulescreen"].open_edit_cell_popup(self, self.cellpos)
 
 
 class HomeScreen(Screen):
@@ -38,7 +57,62 @@ class HomeScreen(Screen):
 
 
 class ScheduleScreen(Screen):
-    pass
+    days_of_the_week = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]
+    layout = None
+    dialog = None
+    editing_cell: ScheduleCell()
+
+    def update_schedule(self):
+        self.layout = GridLayout(cols=5)
+        store = JsonStore("schedule.json")
+        for y in range(0, 10):
+            for x in range(0, 5):
+                try:
+                    storecell = store.get(key=f"{x}-{y}")
+                except KeyError:
+                    storecell = {"material": "", "location": ""}
+                cell = ScheduleCell(
+                    text=f"{storecell.get('material')} - {storecell.get('location')}",
+                    background_color='1',
+                    material=storecell.get('material'),
+                    location=storecell.get('location')
+                )
+                cell.cellpos = [x, y]
+                self.layout.add_widget(cell)
+        self.add_widget(self.layout)
+
+    def open_edit_cell_popup(self, cell, cellpos):
+        self.dialog = MDDialog(
+            title=f"{self.days_of_the_week[cellpos[0]]} - Heure {cellpos[1]+1}",
+            type="custom",
+            content_cls=ScheduleCellDialog(),
+            buttons=[
+                MDFlatButton(
+                    text="ANNULER",
+                    on_release=self.dialog_close
+                ),
+                MDFlatButton(
+                    text="OK",
+                    on_release=self.set_cell_content
+                ),
+            ],
+            size_hint_x=0.8
+        )
+        self.dialog.open()
+
+    def set_cell_content(self, *args):
+        cellpos = self.editing_cell.cellpos
+        store = JsonStore("schedule.json")
+        store.put(
+            key=f"{cellpos[0]}-{cellpos[1]}",
+            material=self.dialog.content_cls.ids["material"].text,
+            location=self.dialog.content_cls.ids["location"].text)
+        self.dialog_close()
+        self.update_schedule()
+
+    def dialog_close(self, *args):
+        if self.dialog:
+            self.dialog.dismiss(force=True)
 
 
 class NotesScreen(Screen):

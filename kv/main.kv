@@ -27,11 +27,13 @@
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "schedule"
+                    app.root.get_widget_of_id("schedulescreen").update_schedule()
                 IconLeftWidget:
                     icon: "calendar"
                     on_press:
                         root.nav_drawer.set_state("close")
                         root.screen_manager.current = "schedule"
+                        app.root.get_widget_of_id("schedulescreen").update_schedule()
             OneLineIconListItem:
                 text: "Notes"
                 on_press:
