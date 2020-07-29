@@ -73,7 +73,7 @@ class NewsWidgetThreeLines(ThreeLineIconListItem):
 
 class HomeScreen(Screen):
     def update_home_screen_news(self):
-        json_file = urlopen("https://file.wylarel.com/waha.json").read()
+        json_file = urlopen("https://gist.github.com/Wylarel/0f2c9408b98149780da2ffc7876eae66/raw").read()
         data = json.loads(json_file)
         self.ids["newslist"].clear_widgets()
         for i in data:
