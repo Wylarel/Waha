@@ -1,0 +1,27 @@
+<BugreportScreen>
+    name: "bugreport"
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        MDList:
+            TwoLineIconListItem:
+                text: "Messenger"
+                on_release: app.open_link("https://m.me/wylarel")
+                secondary_text: "@wylarel"
+                IconLeftWidget:
+                    icon: "facebook-messenger"
+                    on_release: app.open_link("https://m.me/wylarel")
+            TwoLineIconListItem:
+                text: "Instagram"
+                on_release: app.open_link("https://instagram.com/wylarel")
+                secondary_text: "@wylarel"
+                IconLeftWidget:
+                    icon: "instagram"
+                    on_release: app.open_link("https://instagram.com/wylarel")
+            TwoLineIconListItem:
+                text: "Email"
+                on_release: app.open_link("mailto:contact@wylarel.com")
+                secondary_text: "contact@wylarel.com"
+                IconLeftWidget:
+                    icon: "email"
+                    on_release: app.open_link("mailto:contact@wylarel.com")

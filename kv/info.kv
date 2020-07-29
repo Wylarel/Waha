@@ -1,0 +1,107 @@
+<NameDialog>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint: .8, None
+    height: "120dp"
+    MDTextField:
+        id: first_name_input
+        hint_text: "Prénom"
+    MDTextField:
+        id: family_name_input
+        hint_text: "Nom de famille"
+
+<ClassDialog>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint: .8, None
+    height: "50dp"
+    MDTextField:
+        id: class_input
+        hint_text: "Classe"
+        max_text_length: 4
+
+<InfoScreen>
+    name: "info"
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        MDList:
+            OneLineListItem:
+                text: "Informations Personnelles"
+            ThreeLineIconListItem:
+                id: name
+                text: "Nom"
+                secondary_text: "Cliquez pour définir"
+                tertiary_text: "Cliquez pour définir"
+                on_release:
+                    root.open_name_popup()
+                IconLeftWidget:
+                    icon: "face"
+            TwoLineIconListItem:
+                id: birthday
+                text: "Date de naissance"
+                secondary_text: "Cliquez pour définir"
+                on_release:
+                    root.show_birthday_date_picker()
+                IconLeftWidget:
+                    icon: "cake"
+            TwoLineIconListItem:
+                id: class
+                text: "Classe"
+                secondary_text: "Cliquez pour définir"
+                on_release:
+                    root.open_class_popup()
+                IconLeftWidget:
+                    icon: "account-group"
+            OneLineListItem:
+                text: "Informations Générales"
+            ThreeLineIconListItem:
+                text: "Adresse"
+                on_release: app.open_link("https://www.google.com/maps/dir//Ath%C3%A9n%C3%A9e+L%C3%A9onie+de+Waha,+Boulevard+d'Avroy+96,+4000+Li%C3%A8ge/")
+                secondary_text: "Boulevard d'Avroy, 96"
+                tertiary_text: "4000 Liège"
+                IconLeftWidget:
+                    icon: "map-marker"
+                    on_release: app.open_link("https://www.google.com/maps/dir//Ath%C3%A9n%C3%A9e+L%C3%A9onie+de+Waha,+Boulevard+d'Avroy+96,+4000+Li%C3%A8ge/")
+            TwoLineIconListItem:
+                text: "Email"
+                on_release: app.open_link("mailto:waha.administration@gmail.com")
+                secondary_text: "waha.administration@gmail.com"
+                IconLeftWidget:
+                    icon: "email"
+                    on_release: app.open_link("mailto:waha.administration@gmail.com")
+            TwoLineIconListItem:
+                text: "Accueil"
+                on_release: app.open_link("tel:042383921")
+                secondary_text: "04/238-39-21"
+                IconLeftWidget:
+                    icon: "phone"
+                    on_release: app.open_link("tel:042383921")
+            TwoLineIconListItem:
+                text: "Economat"
+                on_release: app.open_link("tel:042383924")
+                secondary_text: "04/238-39-24"
+                IconLeftWidget:
+                    icon: "phone"
+                    on_release: app.open_link("tel:042383924")
+            TwoLineIconListItem:
+                text: "Secrétariat de Direction"
+                on_release: app.open_link("tel:042383925")
+                secondary_text: "04/238-39-25"
+                IconLeftWidget:
+                    icon: "phone"
+                    on_release: app.open_link("tel:042383925")
+            TwoLineIconListItem:
+                text: "Educateurs (1-2-3e années)"
+                on_release: app.open_link("tel:042383926")
+                secondary_text: "04/238-39-26"
+                IconLeftWidget:
+                    icon: "phone"
+                    on_release: app.open_link("tel:042383926")
+            TwoLineIconListItem:
+                text: "Educateurs (4-5-6e années)"
+                on_release: app.open_link("tel:042383927")
+                secondary_text: "04/238-39-27"
+                IconLeftWidget:
+                    icon: "phone"
+                    on_release: app.open_link("tel:042383927")

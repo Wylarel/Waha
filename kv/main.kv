@@ -1,0 +1,100 @@
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+    AnchorLayout:
+        anchor_x: "center"
+        size_hint_y: None
+        height: avatar.height
+        Image:
+            id: avatar
+            size_hint: None, None
+            source: "ressources/img/logo.png"
+    ScrollView:
+        MDList:
+            OneLineIconListItem:
+                text: "Accueil"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "home"
+                IconLeftWidget:
+                    icon: "home"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "home"
+            OneLineIconListItem:
+                text: "Horaire"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "schedule"
+                IconLeftWidget:
+                    icon: "calendar"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "schedule"
+            OneLineIconListItem:
+                text: "Notes"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "notes"
+                    app.root.update_notelist()
+                IconLeftWidget:
+                    icon: "notebook"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "notes"
+                        app.root.update_notelist()
+            OneLineIconListItem:
+                text: "Info"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "info"
+                    app.root.update_info()
+                IconLeftWidget:
+                    icon: "account-box"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "info"
+                        app.root.update_info()
+            OneLineIconListItem:
+                text: "Signaler un bug"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "bugreport"
+                IconLeftWidget:
+                    icon: "bug"
+                    on_press:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current = "bugreport"
+
+Waha: #Root Rule
+    cols: 1
+    id: waha
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10
+        title: "Waha"
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+    NavigationLayout:
+        x: toolbar.height
+        size_hint_y: 1.0 - toolbar.height/root.height
+        ScreenManager:
+            id: screen_manager
+            HomeScreen:
+                id: homescreen
+            ScheduleScreen:
+                id: schedulescreen
+            NotesScreen:
+                id: notesscreen
+            EditnoteScreen:
+                id: editnotescreen
+            InfoScreen:
+                id: infoscreen
+            BugreportScreen:
+                id: bugreportscreen
+        MDNavigationDrawer:
+            id: nav_drawer
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer

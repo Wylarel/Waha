@@ -1,0 +1,40 @@
+<NoteListItem>
+    on_release: app.root.get_widget_of_id("editnotescreen").load_note(root)
+    IconLeftWidget:
+        icon: root.icon
+        on_release: app.root.get_widget_of_id("notesscreen").open_note_delete_confirmation_popup(root)
+
+<NotesScreen>
+    name: "notes"
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        MDList:
+            id: notelist
+    MDFloatingActionButton:
+        icon: "plus"
+        id: new
+        y: root.height - self.height - dp(10)
+        x: root.width - (self.width + dp(10))
+        md_bg_color: app.theme_cls.primary_color
+        on_press:
+            app.root.get_widget_of_id("editnotescreen").load_note(self)
+
+
+<EditnoteScreen>
+    name: "editnote"
+    MDTextField:
+        id: note_textfield
+        size_hint_x: 1
+        size_hint_y: 1
+        multiline: True
+    MDFloatingActionButton:
+        icon: "arrow-left"
+        id: editnote_back_floating_button
+        y: root.height - self.height - dp(10)
+        x: dp(10)
+        md_bg_color: app.theme_cls.primary_color
+        on_press:
+            app.root.get_widget_of_id("screen_manager").current = "notes"
+            root.save_note()
+            app.root.get_widget_of_id("notesscreen").update_notelist()
