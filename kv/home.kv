@@ -1,7 +1,17 @@
+<NewsWidget>
+    IconLeftWidget:
+        icon: "newspaper"
+
+<NewsWidgetThreeLines>
+    IconLeftWidget:
+        icon: "newspaper"
+
 <HomeScreen>
     name: "home"
-    MDLabel:
-        id: home-time-widget
-        padding: "40dp", 0
-        text: "Bienvenue sur l'application non-officielle pour les élèves de l'Athénée Léonie de Waha. Commencez à naviguer dans l'application en ouvrant le menu à gauche. Si vous détectez des bugs, merci de nous en informer. (Voir onglet \"Signaler un bug\")"
-        halign: "center"
+    on_touch_down:
+        self.update_home_screen_news()
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        MDList:
+            id: newslist

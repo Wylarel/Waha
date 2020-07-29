@@ -17,11 +17,13 @@
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "home"
+                    app.root.get_widget_of_id("homescreen").update_home_screen_news()
                 IconLeftWidget:
                     icon: "home"
                     on_press:
                         root.nav_drawer.set_state("close")
                         root.screen_manager.current = "home"
+                        app.root.get_widget_of_id("homescreen").update_home_screen_news()
             OneLineIconListItem:
                 text: "Horaire"
                 on_press:
@@ -39,25 +41,25 @@
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "notes"
-                    app.root.update_notelist()
+                    app.root.get_widget_of_id("notesscreen").update_notelist()
                 IconLeftWidget:
                     icon: "notebook"
                     on_press:
                         root.nav_drawer.set_state("close")
                         root.screen_manager.current = "notes"
-                        app.root.update_notelist()
+                        app.root.get_widget_of_id("notesscreen").update_notelist()
             OneLineIconListItem:
                 text: "Info"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "info"
-                    app.root.update_info()
+                    app.root.get_widget_of_id("infoscreen").update_info()
                 IconLeftWidget:
                     icon: "account-box"
                     on_press:
                         root.nav_drawer.set_state("close")
                         root.screen_manager.current = "info"
-                        app.root.update_info()
+                        app.root.get_widget_of_id("infoscreen").update_info()
             OneLineIconListItem:
                 text: "Signaler un bug"
                 on_press:

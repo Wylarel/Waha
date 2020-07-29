@@ -1,12 +1,14 @@
+import json
 import random
 import string
+import urllib
 import webbrowser
 from datetime import datetime
+from urllib.request import urlopen
 
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.storage.jsonstore import JsonStore
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
@@ -15,7 +17,7 @@ from kivymd.app import MDApp
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.list import OneLineIconListItem
+from kivymd.uix.list import OneLineIconListItem, ThreeLineListItem, TwoLineListItem, TwoLineIconListItem, ThreeLineIconListItem
 from kivymd.uix.picker import MDDatePicker
 
 
@@ -44,16 +46,53 @@ class ScheduleCell(Button):
     cellpos = [0, 0]
     material = StringProperty()
     location = StringProperty()
+    color = [0.2, 0.2, 0.2, 1]
     background_color = StringProperty()
-    # background_normal = "ressources/img/logo.png"
+    background_normal = "ressources/img/normal.png"
 
     def on_release(self):
         app.root.ids["schedulescreen"].editing_cell = self
         app.root.ids["schedulescreen"].open_edit_cell_popup(self, self.cellpos)
 
 
+class NewsWidget(TwoLineIconListItem):
+    link = StringProperty()
+
+    def on_release(self, *args):
+        if self.link != "":
+            webbrowser.open(self.link)
+
+
+class NewsWidgetThreeLines(ThreeLineIconListItem):
+    link = StringProperty()
+
+    def on_release(self, *args):
+        if self.link != "":
+            webbrowser.open(self.link)
+
+
 class HomeScreen(Screen):
-    pass
+    def update_home_screen_news(self):
+        json_file = urlopen("https://file.wylarel.com/waha.json").read()
+        data = json.loads(json_file)
+        self.ids["newslist"].clear_widgets()
+        for i in data:
+            news = data[i]
+            try:
+                widget = NewsWidgetThreeLines(
+                    text=i,
+                    secondary_text=news["content"],
+                    tertiary_text=news["content_alt"],
+                    link=news["link"]
+                )
+            except KeyError:
+                widget = NewsWidget(
+                    text=i,
+                    secondary_text=news["content"],
+                    link=news["link"]
+                )
+            self.ids["newslist"].add_widget(widget)
+        pass
 
 
 class ScheduleScreen(Screen):
@@ -69,10 +108,15 @@ class ScheduleScreen(Screen):
             for x in range(0, 5):
                 try:
                     storecell = store.get(key=f"{x}-{y}")
+                    if not storecell.get('material') == "" and not storecell.get('location') == "":
+                        text = f"{storecell.get('material')} - {storecell.get('location')}"
+                    else:
+                        text = f"{storecell.get('material')}{storecell.get('location')}"
                 except KeyError:
                     storecell = {"material": "", "location": ""}
+                    text = ""
                 cell = ScheduleCell(
-                    text=f"{storecell.get('material')} - {storecell.get('location')}",
+                    text=text,
                     background_color='1',
                     material=storecell.get('material'),
                     location=storecell.get('location')
@@ -83,7 +127,7 @@ class ScheduleScreen(Screen):
 
     def open_edit_cell_popup(self, cell, cellpos):
         self.dialog = MDDialog(
-            title=f"{self.days_of_the_week[cellpos[0]]} - Heure {cellpos[1]+1}",
+            title=f"{self.days_of_the_week[cellpos[0]]} - Heure {cellpos[1] + 1}",
             type="custom",
             content_cls=ScheduleCellDialog(),
             buttons=[
@@ -126,8 +170,7 @@ class NotesScreen(Screen):
         """
         store = JsonStore('notes.json')
         notelist = self.ids["notelist"]
-        for widget in self.notelist_items:
-            notelist.remove_widget(widget)
+        notelist.clear_widgets()
         self.notelist_items = {}
 
         for note in store.keys():
@@ -326,12 +369,6 @@ class BugreportScreen(Screen):
 
 
 class Waha(MDGridLayout):
-    def update_info(self):
-        self.ids["infoscreen"].update_info()
-
-    def update_notelist(self):
-        self.ids["notesscreen"].update_notelist()
-
     def get_widget_of_id(self, *args):
         return self.ids[args[0]]
 

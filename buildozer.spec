@@ -28,7 +28,7 @@ source.exclude_dirs = tests, bin, venv
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1.1
+version = 0.1.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -36,7 +36,7 @@ version = 0.1.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,git+https://github.com/HeaTTheatR/KivyMD.git
+requirements = python3,kivy,git+https://github.com/HeaTTheatR/KivyMD.git,urllib,json
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
