@@ -4,6 +4,7 @@ import string
 import urllib
 import webbrowser
 from datetime import datetime
+from urllib.error import URLError
 from urllib.request import urlopen
 
 from kivy.lang import Builder
@@ -55,8 +56,19 @@ class ScheduleCell(Button):
         app.root.ids["schedulescreen"].open_edit_cell_popup(self, self.cellpos)
 
 
+class ScheduleCellDays(Button):
+    background_color = [0.75, 0.75, 0.75, 1]
+    background_normal = "ressources/img/normal.png"
+
+
+class ScheduleCellSeparator(Button):
+    background_color = [0.9, 0.9, 0.9, 1]
+    background_normal = "ressources/img/normal.png"
+
+
 class NewsWidget(TwoLineIconListItem):
     link = StringProperty()
+    icon = StringProperty()
 
     def on_release(self, *args):
         if self.link != "":
@@ -65,6 +77,7 @@ class NewsWidget(TwoLineIconListItem):
 
 class NewsWidgetThreeLines(ThreeLineIconListItem):
     link = StringProperty()
+    icon = StringProperty()
 
     def on_release(self, *args):
         if self.link != "":
@@ -76,7 +89,27 @@ class HomeScreen(Screen):
         self.update_home_screen_news()
 
     def update_home_screen_news(self):
-        json_file = urlopen("https://gist.github.com/Wylarel/0f2c9408b98149780da2ffc7876eae66/raw").read()
+        try:
+            json_file = urlopen("https://gist.github.com/Wylarel/0f2c9408b98149780da2ffc7876eae66/raw").read()
+        except URLError:  # No Internet
+            self.ids["newslist"].clear_widgets()
+            nointernet = NewsWidgetThreeLines(
+                text="Vous n'avez pas internet",
+                secondary_text="Vous devez être connecté·e",
+                tertiary_text="pour voir ce contenu",
+                link="",
+                icon="wifi-off"
+            )
+            self.ids["newslist"].add_widget(nointernet)
+            nointernet = NewsWidgetThreeLines(
+                text="Continuez votre navigation",
+                secondary_text="Ouvrez le menu à",
+                tertiary_text="gauche pour commencer",
+                link="",
+                icon="arrow-left"
+            )
+            self.ids["newslist"].add_widget(nointernet)
+            return
         data = json.loads(json_file)
         self.ids["newslist"].clear_widgets()
         for i in data:
@@ -86,13 +119,15 @@ class HomeScreen(Screen):
                     text=i,
                     secondary_text=news["content"],
                     tertiary_text=news["content_alt"],
-                    link=news["link"]
+                    link=news["link"],
+                    icon="newspaper"
                 )
             except KeyError:
                 widget = NewsWidget(
                     text=i,
                     secondary_text=news["content"],
-                    link=news["link"]
+                    link=news["link"],
+                    icon="newspaper"
                 )
             self.ids["newslist"].add_widget(widget)
         pass
@@ -105,8 +140,10 @@ class ScheduleScreen(Screen):
     editing_cell: ScheduleCell()
 
     def update_schedule(self):
-        self.layout = GridLayout(cols=5)
         store = JsonStore("schedule.json")
+        self.layout = GridLayout(cols=5)
+        for x in range(0, 5):
+            self.layout.add_widget(ScheduleCellDays(text=self.days_of_the_week[x][:3].upper()))
         for y in range(0, 10):
             for x in range(0, 5):
                 try:
@@ -126,6 +163,9 @@ class ScheduleScreen(Screen):
                 )
                 cell.cellpos = [x, y]
                 self.layout.add_widget(cell)
+            if y == 2 or y == 5:
+                for x in range(0, 5):
+                    self.layout.add_widget(ScheduleCellSeparator())
         self.add_widget(self.layout)
 
     def open_edit_cell_popup(self, cell, cellpos):
