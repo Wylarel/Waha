@@ -72,6 +72,9 @@ class NewsWidgetThreeLines(ThreeLineIconListItem):
 
 
 class HomeScreen(Screen):
+    def on_kv_post(self, base_widget):
+        self.update_home_screen_news()
+
     def update_home_screen_news(self):
         json_file = urlopen("https://gist.github.com/Wylarel/0f2c9408b98149780da2ffc7876eae66/raw").read()
         data = json.loads(json_file)
